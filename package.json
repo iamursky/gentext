@@ -1,0 +1,56 @@
+{
+  "name": "gentext",
+  "version": "1.0.0",
+  "description": "Generates a string of random English words with fine-tuned parameters",
+  "keywords": [
+    "random",
+    "english",
+    "words",
+    "text",
+    "generation"
+  ],
+  "homepage": "https://github.com/iamursky/gentext#readme",
+  "bugs": {
+    "url": "https://github.com/iamursky/gentext/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iamursky/gentext.git"
+  },
+  "license": "MIT",
+  "author": "Ilya Amursky <ilya.amursky@gmail.com>",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "license"
+  ],
+  "scripts": {
+    "build": "rimraf dist && tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "knuth-shuffle-seeded": "^1.0.6"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/knuth-shuffle-seeded": "1.0.2",
+    "eslint": "10.1.0",
+    "eslint-config-prettier": "10.1.8",
+    "globals": "17.4.0",
+    "prettier": "3.8.1",
+    "rimraf": "6.1.3",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.57.2"
+  }
+}

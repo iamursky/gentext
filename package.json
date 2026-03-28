@@ -1,7 +1,7 @@
 {
   "name": "gentext",
   "version": "1.0.0",
-  "description": "Generates a string of random English words with fine-tuned parameters",
+  "description": "Generates random English words ranked by real-world frequency from a one-billion-word corpus",
   "keywords": [
     "random",
     "english",

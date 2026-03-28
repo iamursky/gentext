@@ -1,6 +1,6 @@
 # gentext
 
-Generates a string of random English words with fine-tuned parameters. Useful for typing practice, placeholder content, and testing.
+Generates random English words ranked by real-world frequency from a one-billion-word corpus. Useful for typing practice, placeholder content, and testing.
 
 ## Install
 
@@ -54,6 +54,10 @@ If `numberOfWords` exceeds the available pool, the output is silently capped at 
 ```ts
 import gentext, { MAX_NOUNS, MAX_VERBS, MAX_WORDS } from "gentext";
 ```
+
+## Data source
+
+Word lists are derived from [wordfrequency.info](https://www.wordfrequency.info/), based on the one-billion-word Corpus of Contemporary American English (COCA) — the only corpus of English that is large, up-to-date, and balanced between many genres.
 
 ## License
 

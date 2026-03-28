@@ -40,12 +40,12 @@ export interface ITextGenerationOptions {
    * A value between `0` and `1` that controls how much the word pool is
    * restricted to high-frequency words.
    *
-   * - `1` — only the top {@link numberOfWords} most popular words are eligible.
+   * - `1` — only the top {@link numberOfWords} most frequent words are eligible.
    * - `0` — the entire built-in dictionary is eligible.
    *
    * @defaultValue 1
    */
-  popularityThreshold?: number;
+  frequencyThreshold?: number;
 
   /**
    * A value between `0` and `1` that controls the noun-to-verb ratio in the
@@ -70,7 +70,7 @@ export interface ITextGenerationOptions {
  * gentext();
  *
  * // 10 nouns only, drawn from the full dictionary
- * gentext({ numberOfWords: 10, type: "nouns", popularityThreshold: 0 });
+ * gentext({ numberOfWords: 10, type: "nouns", frequencyThreshold: 0 });
  *
  * // 40 words, 80 % nouns
  * gentext({ numberOfWords: 40, nounToVerbRatio: 0.8 });
@@ -81,7 +81,7 @@ export interface ITextGenerationOptions {
  */ export default function gentext({
   type = "nouns-and-verbs",
   numberOfWords = 25,
-  popularityThreshold = 1,
+  frequencyThreshold = 1,
   nounToVerbRatio = 0.5,
 }: ITextGenerationOptions = {}): string {
   const totalAvailable = nouns.length + verbs.length;
@@ -89,7 +89,7 @@ export interface ITextGenerationOptions {
 
   const poolSize = Math.max(
     numberOfWords,
-    Math.ceil(numberOfWords + (totalAvailable - numberOfWords) * (1 - popularityThreshold)),
+    Math.ceil(numberOfWords + (totalAvailable - numberOfWords) * (1 - frequencyThreshold)),
   );
 
   if (type === "nouns-and-verbs") {

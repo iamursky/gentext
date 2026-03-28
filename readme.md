@@ -20,7 +20,7 @@ gentext();
 gentext({
   numberOfWords: 10,
   type: "nouns",
-  popularityThreshold: 0,
+  frequencyThreshold: 0,
 });
 
 // 40 words, 80% nouns
@@ -32,12 +32,12 @@ gentext({
 
 ## Options
 
-| Option                | Type                                          | Default             | Description                                                                                                                            |
-| --------------------- | --------------------------------------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `type`                | `"nouns"` \| `"verbs"` \| `"nouns-and-verbs"` | `"nouns-and-verbs"` | Which word types to include.                                                                                                           |
-| `numberOfWords`       | `number`                                      | `25`                | Number of words to return (capped at the pool size — see below).                                                                       |
-| `popularityThreshold` | `number` (0–1)                                | `1`                 | Controls how much the word pool is restricted to high-frequency words. `1` = only the most popular words; `0` = the entire dictionary. |
-| `nounToVerbRatio`     | `number` (0–1)                                | `0.5`               | Noun-to-verb ratio when `type` is `"nouns-and-verbs"`. Higher values produce more nouns.                                               |
+| Option               | Type                                          | Default             | Description                                                                                                                             |
+| -------------------- | --------------------------------------------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`               | `"nouns"` \| `"verbs"` \| `"nouns-and-verbs"` | `"nouns-and-verbs"` | Which word types to include.                                                                                                            |
+| `numberOfWords`      | `number`                                      | `25`                | Number of words to return (capped at the pool size — see below).                                                                        |
+| `frequencyThreshold` | `number` (0–1)                                | `1`                 | Controls how much the word pool is restricted to high-frequency words. `1` = only the most frequent words; `0` = the entire dictionary. |
+| `nounToVerbRatio`    | `number` (0–1)                                | `0.5`               | Noun-to-verb ratio when `type` is `"nouns-and-verbs"`. Higher values produce more nouns.                                                |
 
 ## Word limits
 

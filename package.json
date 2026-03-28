@@ -1,6 +1,6 @@
 {
   "name": "gentext",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Generates random English words ranked by real-world frequency from a one-billion-word corpus",
   "keywords": [
     "random",

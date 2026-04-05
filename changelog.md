@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.1.0] - 2026-04-05
+
+### Features
+
+- `excludeWords` — array of words to exclude from the generated text; replacements are drawn from the remaining dictionary so the requested `numberOfWords` count is still met
+
 ## [1.0.0] - 2026-03-28
 
 Initial release.

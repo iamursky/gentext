@@ -38,6 +38,7 @@ gentext({
 | `numberOfWords`      | `number`                                      | `25`                | Number of words to return (capped at the pool size — see below).                                                                        |
 | `frequencyThreshold` | `number` (0–1)                                | `1`                 | Controls how much the word pool is restricted to high-frequency words. `1` = only the most frequent words; `0` = the entire dictionary. |
 | `nounToVerbRatio`    | `number` (0–1)                                | `0.5`               | Noun-to-verb ratio when `type` is `"nouns-and-verbs"`. Higher values produce more nouns.                                                |
+| `excludeWords`       | `string[]`                                    | `[]`                | Words to exclude from the output. Replacements are drawn from the remaining dictionary so `numberOfWords` is still met.                 |
 
 ## Word limits
 

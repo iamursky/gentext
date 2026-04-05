@@ -56,6 +56,15 @@ export interface ITextGenerationOptions {
    * @defaultValue 0.5
    */
   nounToVerbRatio?: number;
+
+  /**
+   * Words to exclude from the generated text. When skipped words are removed
+   * from the pool, replacements are drawn from the remaining dictionary so
+   * that {@link numberOfWords} words are still returned.
+   *
+   * @defaultValue []
+   */
+  excludeWords?: string[];
 }
 
 /**
@@ -74,6 +83,9 @@ export interface ITextGenerationOptions {
  *
  * // 40 words, 80 % nouns
  * gentext({ numberOfWords: 40, nounToVerbRatio: 0.8 });
+ *
+ * // 25 words, skipping specific words
+ * gentext({ excludeWords: ["the", "run", "make"] });
  * ```
  *
  * @param options - Configuration for text generation.
@@ -83,8 +95,10 @@ export interface ITextGenerationOptions {
   numberOfWords = 25,
   frequencyThreshold = 1,
   nounToVerbRatio = 0.5,
+  excludeWords = [],
 }: ITextGenerationOptions = {}): string {
   const totalAvailable = nouns.length + verbs.length;
+  const skipSet = new Set(excludeWords);
   const pool: string[] = [];
 
   const poolSize = Math.max(
@@ -103,7 +117,29 @@ export interface ITextGenerationOptions {
     pool.push(...verbs.slice(0, Math.min(poolSize, verbs.length)));
   }
 
-  const actualCount = Math.min(numberOfWords, pool.length);
+  const filtered = pool.filter((w) => !skipSet.has(w));
 
-  return shuffle(pool).slice(0, actualCount).join(" ");
+  // If skip reduced the pool below numberOfWords, backfill from the rest of
+  // the dictionary (words not already in the pool and not in skipSet).
+  if (filtered.length < numberOfWords) {
+    const poolSet = new Set(pool);
+    const backfill: string[] = [];
+
+    if (type === "nouns-and-verbs" || type === "nouns") {
+      for (const w of nouns) {
+        if (!poolSet.has(w) && !skipSet.has(w)) backfill.push(w);
+      }
+    }
+    if (type === "nouns-and-verbs" || type === "verbs") {
+      for (const w of verbs) {
+        if (!poolSet.has(w) && !skipSet.has(w)) backfill.push(w);
+      }
+    }
+
+    filtered.push(...backfill.slice(0, numberOfWords - filtered.length));
+  }
+
+  const actualCount = Math.min(numberOfWords, filtered.length);
+
+  return shuffle(filtered).slice(0, actualCount).join(" ");
 }

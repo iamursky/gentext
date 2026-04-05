@@ -65,6 +65,19 @@ export interface ITextGenerationOptions {
    * @defaultValue []
    */
   excludeWords?: string[];
+
+  /**
+   * An array of n-grams (substrings). Words that contain each n-gram are
+   * preferentially included in the output, with the count of words containing
+   * the first n-gram exceeding the count of words containing the last n-gram.
+   *
+   * Words are distributed across n-grams using decreasing weights
+   * (`N, N-1, …, 1`). If the pool contains no words for a given n-gram, that
+   * slot is left empty and remaining slots are filled with unrestricted words.
+   *
+   * @defaultValue []
+   */
+  ngrams?: string[];
 }
 
 /**
@@ -96,6 +109,7 @@ export interface ITextGenerationOptions {
   frequencyThreshold = 1,
   nounToVerbRatio = 0.5,
   excludeWords = [],
+  ngrams = [],
 }: ITextGenerationOptions = {}): string {
   const totalAvailable = nouns.length + verbs.length;
   const skipSet = new Set(excludeWords);
@@ -141,5 +155,33 @@ export interface ITextGenerationOptions {
 
   const actualCount = Math.min(numberOfWords, filtered.length);
 
-  return shuffle(filtered).slice(0, actualCount).join(" ");
+  if (ngrams.length === 0) {
+    return shuffle(filtered).slice(0, actualCount).join(" ");
+  }
+
+  // Distribute words across ngrams with weights N, N-1, …, 1 so that the
+  // count for the first ngram exceeds the count for the last.
+  const N = ngrams.length;
+  const totalWeight = (N * (N + 1)) / 2;
+  const shuffledPool = shuffle([...filtered]);
+  const selected: string[] = [];
+  const usedSet = new Set<string>();
+
+  for (let i = 0; i < N; i++) {
+    const ngram = ngrams[i]!;
+    const weight = N - i;
+    const targetCount = Math.max(1, Math.floor(actualCount * weight / totalWeight));
+    const matching = shuffledPool.filter((w) => w.includes(ngram) && !usedSet.has(w));
+    const picked = matching.slice(0, targetCount);
+    picked.forEach((w) => usedSet.add(w));
+    selected.push(...picked);
+  }
+
+  // Fill remaining slots with words not already selected.
+  if (selected.length < actualCount) {
+    const rest = shuffledPool.filter((w) => !usedSet.has(w));
+    selected.push(...rest.slice(0, actualCount - selected.length));
+  }
+
+  return shuffle(selected).slice(0, actualCount).join(" ");
 }

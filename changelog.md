@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.2.0] - 2026-04-05
+
+### Features
+
+- `ngrams` — array of substrings; words containing each n-gram are preferentially included using decreasing weights (`N, N-1, …, 1`), so the first n-gram gets the most representation; empty slots are backfilled with unrestricted words
+
 ## [1.1.0] - 2026-04-05
 
 ### Features

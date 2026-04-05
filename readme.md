@@ -28,6 +28,11 @@ gentext({
   numberOfWords: 40,
   nounToVerbRatio: 0.8,
 });
+
+// 25 words weighted toward words containing "an" or "in"
+gentext({
+  ngrams: ["an", "in"],
+});
 ```
 
 ## Options
@@ -39,6 +44,7 @@ gentext({
 | `frequencyThreshold` | `number` (0–1)                                | `1`                 | Controls how much the word pool is restricted to high-frequency words. `1` = only the most frequent words; `0` = the entire dictionary. |
 | `nounToVerbRatio`    | `number` (0–1)                                | `0.5`               | Noun-to-verb ratio when `type` is `"nouns-and-verbs"`. Higher values produce more nouns.                                                |
 | `excludeWords`       | `string[]`                                    | `[]`                | Words to exclude from the output. Replacements are drawn from the remaining dictionary so `numberOfWords` is still met.                 |
+| `ngrams`             | `string[]`                                    | `[]`                | Substrings to prioritise. Words containing each n-gram are weighted `N, N-1, …, 1` so the first n-gram gets the most representation. Empty slots are backfilled with unrestricted words. |
 
 ## Word limits
 
